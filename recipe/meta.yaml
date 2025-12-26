@@ -1,5 +1,5 @@
 {% set name = "gstools-cython" %}
-{% set version = "1.1.0" %}
+{% set version = "1.2.0" %}
 
 package:
   name: {{ name|lower }}
@@ -7,10 +7,10 @@ package:
 
 source:
   url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/gstools_cython-{{ version }}.tar.gz
-  sha256: 589431e7048de96a9ba5eb90877b20838a15cf71629c9dc586811ce1c92bc12e
+  sha256: 164ad498e5b563d7b52a64c8d476ca1cf27fc61bbc280d75d40856ab9f87b9d7
 
 build:
-  number: 1
+  number: 0
   script_env:
     - GSTOOLS_BUILD_PARALLEL=1
   script:
