@@ -10,7 +10,7 @@ source:
   sha256: 164ad498e5b563d7b52a64c8d476ca1cf27fc61bbc280d75d40856ab9f87b9d7
 
 build:
-  number: 0
+  number: 1
   script_env:
     - GSTOOLS_BUILD_PARALLEL=1
   script:
