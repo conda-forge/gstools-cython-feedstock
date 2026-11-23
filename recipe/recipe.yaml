@@ -1,0 +1,84 @@
+schema_version: 1
+
+context:
+  name: gstools-cython
+  version: "1.2.0"
+
+package:
+  name: ${{ name|lower }}
+  version: ${{ version }}
+
+source:
+  url: https://files.pythonhosted.org/packages/source/${{ name[0] }}/${{ name }}/gstools_cython-${{ version }}.tar.gz
+  sha256: 164ad498e5b563d7b52a64c8d476ca1cf27fc61bbc280d75d40856ab9f87b9d7
+
+build:
+  number: 2
+  script:
+    env:
+      GSTOOLS_BUILD_PARALLEL: 1
+    content:
+      - ${{ PYTHON }} -m pip install . --no-deps --no-build-isolation -vv
+
+requirements:
+  build:
+    - if: build_platform != target_platform
+      then: python
+    - if: build_platform != target_platform
+      then: cross-python_${{ target_platform }}
+    - if: build_platform != target_platform
+      then: cython >=3.0
+    - if: build_platform != target_platform
+      then: numpy
+    - if: osx
+      then: llvm-openmp
+    - if: linux
+      then: libgomp
+    - ${{ compiler('c') }}
+    - ${{ stdlib("c") }}
+    - ${{ compiler('cxx') }}
+  host:
+    - pip
+    - python
+    - setuptools >=64
+    - setuptools_scm >=7
+    - cython >=3.0
+    - numpy
+    - extension-helpers
+    - if: win
+      then: vcomp14
+  run:
+    - python
+    - numpy >=1.20.0
+    - if: win
+      then: vcomp14
+
+tests:
+  - python:
+      imports:
+        - gstools_cython
+      pip_check: false
+  - files:
+      source:
+        - tests
+    requirements:
+      run:
+        - pytest
+    script:
+      # tests found to be flappy on windows
+      - if: win
+        then: python -m pytest -k "not structured" -vv tests
+        else: python -m pytest -vv tests
+
+about:
+  license: LGPL-3.0-or-later
+  license_file: LICENSE
+  summary: Cython backend for GSTools.
+  homepage: https://github.com/GeoStat-Framework/GSTools-Cython
+  repository: https://github.com/GeoStat-Framework/GSTools-Cython
+  documentation: https://gstools-cython.readthedocs.io
+
+extra:
+  recipe-maintainers:
+    - MuellerSeb
+    - LSchueler
